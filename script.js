@@ -76,8 +76,6 @@ function createAccount() {
     if (createPassword.length < 6) {
         errorCreatePassword.innerHTML = "Senha deve ter pelo menos 6 digitos";
     }
-    
-    //Style
 
 }
 
@@ -197,7 +195,7 @@ function save() {
         //Calc
         let userName = userNameInput.value;
         let siteName = passwordFunction.value;
-        
+
         db.collection(PASSWORDS)
             .doc(userName).update({
                 Passwords: firebase.firestore.FieldValue.arrayUnion(siteName + " - " + password)
@@ -217,7 +215,7 @@ function save() {
                 })
             }).catch(err => {
                 console.log(err);
-            })
+            })        
 
         //Style
         generatePassword.style.display = "none";

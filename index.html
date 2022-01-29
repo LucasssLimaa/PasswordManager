@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de senhas</title>
+
+    <link href="style.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.8.1/firebase.js"></script>
+
+    <div id="container">
+
+        <h1 id="header">Gerador de Senhas</h1>
+        <div id="createAccountArea">
+            <h1>Crie Sua Conta</h1>
+            <p id="failToCreateUser"></p>
+            <input id="inputCreateUser" type="text" placeholder="Nome de Usuário">
+            <p id="errorCreatePassword"></p>
+            <input id="inputCreatePassword" type="password" placeholder="Senha">
+            <button id="crateAccountButton" onclick="createAccount()">Registrar</button>
+            <h3>Já possui uma conta?</h3>
+            <button id="goToLoginButton" onclick="goToLoginArea()">Login</button>
+        </div>
+        <div id="userCreatedArea">
+            <h2>Usuário Criado Com Sucesso</h2>
+            <button id="leaveToStartButton" onclick="backToStart()">Voltar</button>
+            <button id="makeLoginButton" onclick="goToLoginArea()">Fazer Login</button>
+        </div>
+        <div id="loginArea">
+            <h2 id="putLogin"></h2>
+            <div id="loginInputs">
+                <input id="userNameInput" type="text" placeholder="Nome de Usuário">
+                <!--input id="inputLoginEmail" type="text" placeholder="Email"-->
+                <input id="userPasswordInput" type="password" placeholder="Senha">
+            </div>
+            <div>
+                <button id="backToCreateAccountButton" onclick="backToCreateAccount()">Voltar</button>
+                <button id="loginButton" onclick="login()">Login</button>
+            </div>
+        </div>
+
+        <div id="generatorArea">
+            <h2 id="welcome"></h2>
+            <div id="mainButtons">
+                <!--button id="seePasswords" onclick="showPasswords()">Minhas Senhas</button-->
+                <button id="backToStartButton" onclick="backToStart()">Voltar</button>
+                <button id="generatePassword" onclick="createPassword()">Gerar Senha</button>
+            </div>
+            <h2 id="yourPassword"></h2>
+            <h2 id="passwordHTML"></h2>
+            <button id="savePasswordButton" onclick="savePassword()">Salvar Senha</button>
+            <h2 id="h2Message"></h2>
+            <input id="passwordFunction" type="text" placeholder="Ex: Youtube">
+            <p id="inputError"></p>
+            <h2 id="successMessage"></h2>
+            <div id="saveControls">
+                <button id="backButton" onclick="back()">Voltar</button>
+                <button id="saveButton" onclick="save()">Salvar</button>
+            </div>
+        </div>
+
+        <div id="passwordsArea">
+            <h3 id="myPasswords">My Passwords:</h3>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,240 @@
+body {
+    font-family: lato;
+    background-color: slategray;
+}
+
+@font-face {
+    font-family: lato;
+    src: url(assets/fonts/Lato-Light.ttf);
+}
+
+input {
+    width: 11%;
+    padding: 0.4%;
+    border-radius: 5px;
+    border: none;
+    margin: 0.5%;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+input:hover {
+    width: 11.3%;
+    opacity: 0.9;
+}
+
+button {
+    color: white;
+    width: 4.7%;
+    padding: 0.5%;
+    margin: 0.5%;
+    border: none;
+    border-radius: 5px;
+
+    transition-property: all;
+    transition-duration: 100ms;
+}
+
+button:hover {
+    width: 4.9%;
+    opacity: 0.9;
+}
+
+p {
+    font-weight: 800;
+    margin: 0;
+    color: red;
+}
+
+#container {
+    position: relative;
+    color: white;
+    text-align: center;
+    padding-top: 16%;
+}
+
+#header {
+    font-size: 2.2em;
+}
+
+#createAccountArea {
+    display: none;
+    margin: auto;
+    display: flex;
+
+    flex-direction: column;
+    align-items: center;
+}
+
+#errorCreateEmail {
+    font-weight: 800;
+    display: none;
+    margin: 0;
+    color: tomato;
+}
+
+#crateAccountButton {
+    background-color: blue;
+}
+
+#goToLoginButton {
+    background-color: yellowgreen;
+}
+
+#generatorArea {
+    display: none;
+}
+
+#userCreatedArea {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+}
+
+#leaveToStartButton {
+    background-color: red;
+}
+
+#makeLoginButton {
+    width: 6%;
+    background-color: yellowgreen;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+#makeLoginButton:hover {
+    width: 6.2%;
+    opacity: 0.9;
+}
+
+#loginArea {
+    display: none;
+}
+
+#loginInputs {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#inputLoginEmail {
+    flex-shrink: 0;
+    padding: 0.4%;
+    border-radius: 5px;
+    border: none;
+    margin: 0.5%;
+}
+
+#inputLoginPassword {
+    padding: 0.4%;
+    border-radius: 5px;
+    border: none;
+    margin: 0.7%;
+}
+
+#backToCreateAccountButton {
+    background-color: red;
+}
+
+#loginButton {
+    background-color: yellowgreen;
+}
+
+#mainButtons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/*#seePasswords {
+    width: 10%;
+    background-color: forestgreen;
+    width: 11%;
+    font-size: 100%;
+    padding: 0.8%;
+    margin-top: 1%;
+    border-radius: 5px;
+    border: none;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+#seePasswords:hover {
+    width: 11.3%;
+    opacity: 0.9;
+}*/
+
+#generatePassword {
+    background-color: #333333;
+    color: white;
+    width: 11%;
+    font-size: 100%;
+    padding: 0.8%;
+    margin-top: 1%;
+    border-radius: 5px;
+    border: none;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+#generatePassword:hover {
+    width: 11.3%;
+    opacity: 0.9;
+}
+
+#backToStartButton {
+    background-color: red;
+}
+
+#passwordHTML {
+    color: orangered;
+}
+
+#savePasswordButton {
+    width: 7.5%;
+    display: none;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.8%;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+#savePasswordButton:hover {
+    width: 7.8%;
+    opacity: 0.9;
+}
+
+#saveControls {
+    margin-top: 1%;
+}
+
+#passwordFunction {
+    display: none;
+}
+
+#inputError {
+    color: red;
+}
+
+#backButton {
+    display: none;
+    background-color: red;
+}
+
+#saveButton {
+    display: none;
+    background-color: green;
+}
+
+#passwordsArea {
+    display: none;
+}

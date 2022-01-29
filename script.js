@@ -29,10 +29,6 @@ var putLogin = document.getElementById("putLogin");
 var userNameInput = document.getElementById("userNameInput");
 var userPasswordInput = document.getElementById("userPasswordInput");
 
-/*var passwordArea = document.getElementById("passwordArea");
-var saveArea = document.getElementById("saveArea");
-var saveControls = document.getElementById("saveControls");*/
-
 var generatePassword = document.getElementById("generatePassword");
 var welcome = document.getElementById("welcome");
 var backToStartButton = document.getElementById("backToStartButton");
@@ -80,24 +76,7 @@ function createAccount() {
     if (createPassword.length < 6) {
         errorCreatePassword.innerHTML = "Senha deve ter pelo menos 6 digitos";
     }
-
-    /*let auth = firebase.auth();
-
-    auth.createUserWithEmailAndPassword(newUserEmail, newUserPassword)
-        .then(user => {
-            console.log(user);
-            createAccountArea.style.display = "none";
-            generatorArea.style.display = "block"
-        }).catch(error => {
-            console.log(error);
-            if (error) {
-                failToCreate.innerHTML = "Credenciais Inválidas";
-                failToCreate.style.color = "red";
-            }
-            if (inputCreatePassword.length < 6) {
-                errorCreatePassword.style.display = "block";
-        });*/
-
+    
     //Style
 
 }
@@ -157,6 +136,7 @@ function backToStart() {
     generatorArea.style.display = "none";
     createAccountArea.style.display = "flex";
     passwordsArea.style.display = "none";
+    passwordsArea.innerHTML = "";
 }
 
 function createPassword() {
@@ -206,7 +186,6 @@ function back() {
     generatePassword.style.display = "inline";
     h2Message.innerHTML = ""
     successMessage.innerHTML = "";
-    passwordsArea.style.display = "none";
 }
 
 function save() {
@@ -218,60 +197,27 @@ function save() {
         //Calc
         let userName = userNameInput.value;
         let siteName = passwordFunction.value;
-
-        /*db.collection(PASSWORDS).where("Name", "==", userName)
-            .get()
-            .then()*/
-
+        
         db.collection(PASSWORDS)
             .doc(userName).update({
                 Passwords: firebase.firestore.FieldValue.arrayUnion(siteName + " - " + password)
             }).then(() => {
                 console.log("Documento atualizado com sucesso");
+                db.collection(PASSWORDS).get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        passwordsArea.innerHTML = "";
+                        let passwordArray = doc.data().Passwords;
+                        for (let i = 0; i < passwordArray.length; i++) {
+                            console.log(passwordArray[i]);
+                            let h4 = document.createElement("h4");
+                            h4.innerHTML = passwordArray[i];
+                            passwordsArea.appendChild(h4);
+                        }
+                    })
+                })
             }).catch(err => {
                 console.log(err);
             })
-
-        /*db.collection(PASSWORDS).doc(passwordFunction.value).set({
-            Password: password,
-        }).then(() => {
-            console.log("Documento inserido com sucesso")
-        }).catch(err => {
-            console.log(err);
-        })*/
-
-        /*db.collection(PASSWORDS).add({
-            Password: passwordFunction.value + " - " + password,
-            //Password: password,
-        }).then((doc) => {
-            console.log("Documento inserido com sucesso", doc);
-        }).catch(err => {
-            console.log(err);
-        })*/
-
-        /*db.collection(PASSWORDS).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                let id = doc.id;
-                console.log(id);
-                db.collection(PASSWORDS).doc("Carlos").update({
-                    //Password: passwordFunction.value + " - " + password,
-                    Passwords: {
-                        netflix: "137uf413",
-                        Youtube: "qwief01"
-                    }
-                }).then(() => {
-                    console.log("Documento inserido com sucesso")
-                }).catch(err => {
-                    console.log(err);
-                })
-            })
-        })*/
-
-        /*db.collection(PASSWORDS).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                console.log(doc.data().Password);
-            })
-        })*/
 
         //Style
         generatePassword.style.display = "none";
@@ -284,32 +230,3 @@ function save() {
         saveButton.style.display = "none";
     }
 }
-
-/*db.collection(PASSWORDS).get().then((snapshot) => {
-    snapshot.forEach((doc) => {
-        let id = doc.id;
-        console.log(id);
-        db.collection(PASSWORDS).doc(userName).update({
-            //Password: passwordFunction.value + " - " + password,
-            Passwords: {
-                netflix: "137uf413",
-                Youtube: "qwief01",
-            }
-        }).then(() => {
-            console.log("Documento atualizado com sucesso");
-        }).catch(err => {
-            console.log(err);
-        })
-    })
-})*/
-
-/*() => {
-    db.collection(PASSWORDS).doc(userName).set({
-        Name: userName,
-        MasterPassword: userPassword,
-    }).then(() => {
-        console.log("Usuário criado com sucesso");
-    }).catch(err => {
-        console.log(err);
-    })
-}*/

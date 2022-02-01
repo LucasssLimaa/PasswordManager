@@ -48,10 +48,8 @@ p {
 }
 
 #container {
-    position: relative;
     color: white;
     text-align: center;
-    padding-top: 16%;
 }
 
 #header {
@@ -145,8 +143,12 @@ p {
 
 #mainButtons {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#backToStartButton {
+    background-color: red;
 }
 
 /*#seePasswords {
@@ -168,10 +170,55 @@ p {
     opacity: 0.9;
 }*/
 
+#deleteAccountButton {
+    width: 7%;
+    padding: 0.7%;
+    background-color: red;
+}
+
+#deleteArea {
+    display: none;
+}
+
+#confirmDelete {
+    width: 13%;
+}
+
+#confirmDelete:hover {
+    width: 13.2%;
+}
+
+#allDeleteButtons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#noDeleteButton {
+    background-color: red;
+}
+
+#deleteButton {
+    background-color: green;
+    width: 8%;
+
+    transition-property: all;
+    transition-duration: 100ms;
+}
+
+#deleteButton:hover {
+    width: 8.2%;
+}
+
+#deleteAccountButton:hover {
+    width: 7.2%;
+}
+
 #generatePassword {
+    margin: auto;
     background-color: #333333;
     color: white;
-    width: 11%;
+    width: 13%;
     font-size: 100%;
     padding: 0.8%;
     margin-top: 1%;
@@ -183,12 +230,8 @@ p {
 }
 
 #generatePassword:hover {
-    width: 11.3%;
+    width: 13.3%;
     opacity: 0.9;
-}
-
-#backToStartButton {
-    background-color: red;
 }
 
 #passwordHTML {
@@ -237,4 +280,8 @@ p {
 
 #passwordsArea {
     display: none;
+    border-radius: 5px;
+
+    width: 30%;
+    padding: 0.5%;
 }

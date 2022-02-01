@@ -219,6 +219,7 @@ function back() {
     generatePassword.style.display = "block";
     h2Message.innerHTML = ""
     successMessage.innerHTML = "";
+    mainButtons.style.display = "flex";
 }
 
 function save() {
@@ -263,6 +264,5 @@ function save() {
         passwordFunction.style.display = "none";
         successMessage.innerHTML = "Sua senha foi salvada com sucesso!";
         saveButton.style.display = "none";
-        mainButtons.style.display = "flex";
     }
 }

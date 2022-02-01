@@ -25,6 +25,7 @@
             <input id="inputCreateUser" type="text" placeholder="Nome de Usuário">
             <p id="errorCreatePassword"></p>
             <input id="inputCreatePassword" type="password" placeholder="Senha">
+            <input id="inputConfirmPassword" type="password" placeholder="Confirmar Senha">
             <button id="crateAccountButton" onclick="createAccount()">Registrar</button>
             <h3>Já possui uma conta?</h3>
             <button id="goToLoginButton" onclick="goToLoginArea()">Login</button>
@@ -52,8 +53,9 @@
             <div id="mainButtons">
                 <!--button id="seePasswords" onclick="showPasswords()">Minhas Senhas</button-->
                 <button id="backToStartButton" onclick="backToStart()">Voltar</button>
-                <button id="generatePassword" onclick="createPassword()">Gerar Senha</button>
+                <button id="deleteAccountButton" onclick="goToDeleteAccount()">Deletar Conta</button>
             </div>
+            <button id="generatePassword" onclick="createPassword()">Gerar Senha</button>
             <h2 id="yourPassword"></h2>
             <h2 id="passwordHTML"></h2>
             <button id="savePasswordButton" onclick="savePassword()">Salvar Senha</button>
@@ -65,10 +67,20 @@
                 <button id="backButton" onclick="back()">Voltar</button>
                 <button id="saveButton" onclick="save()">Salvar</button>
             </div>
-        </div>
 
-        <div id="passwordsArea">
-            <h3 id="myPasswords">My Passwords:</h3>
+            <div id="passwordsArea">
+                <h2>Minhas Senhas:</h2>
+                <h3 id="myPasswords"></h3>
+            </div>
+        </div>
+        <div id="deleteArea">
+            <h2>Digite "CONFIRMAR" para deletar sua conta:</h2>
+            <p id="errorToDelete"></p>
+            <input id="confirmDelete" type="text" placeholder="CONFIRMAR">
+            <div id="allDeleteButtons">
+                <button id="noDeleteButton" onclick="noDelete()">Voltar</button>
+                <button id="deleteButton" onclick="deleteAccount()">Deletar Conta</button>
+            </div>
         </div>
     </div>
 

@@ -18,6 +18,7 @@ var failToCreateUser = document.getElementById("failToCreateUser");
 var inputCreateUser = document.getElementById("inputCreateUser");
 var errorCreatePassword = document.getElementById("errorCreatePassword");
 var inputCreatePassword = document.getElementById("inputCreatePassword");
+var inputConfirmPassword = document.getElementById("inputConfirmPassword");
 var goToLoginButton = document.getElementById("loginButton");
 
 var userCreatedArea = document.getElementById("userCreatedArea");
@@ -30,6 +31,7 @@ var userNameInput = document.getElementById("userNameInput");
 var userPasswordInput = document.getElementById("userPasswordInput");
 
 var generatePassword = document.getElementById("generatePassword");
+var mainButtons = document.getElementById("mainButtons");
 var welcome = document.getElementById("welcome");
 var backToStartButton = document.getElementById("backToStartButton");
 var passwordHTML = document.getElementById("passwordHTML");
@@ -42,10 +44,11 @@ var backButton = document.getElementById("backButton");
 var saveButton = document.getElementById("saveButton");
 var successMessage = document.getElementById("successMessage");
 
+var deleteArea = document.getElementById("deleteArea");
+var errorToDelete = document.getElementById("errorToDelete");
 
 var passwordsArea = document.getElementById("passwordsArea");
 var myPasswords = document.getElementById("myPasswords");
-var allPasswords = document.getElementById("allPasswords");
 
 var password = "";
 
@@ -55,7 +58,7 @@ function createAccount() {
     let createUser = inputCreateUser.value;
     let createPassword = inputCreatePassword.value;
 
-    if (createUser != "" && createPassword.length >= 6) {
+    if (createUser != "" && createPassword.length >= 6 && inputConfirmPassword.value == createPassword) {
         errorCreatePassword.style.display = "none";
         db.collection(PASSWORDS).doc(createUser).update({}).then(() => {}).catch(() => {
             createAccountArea.style.display = "none";
@@ -76,6 +79,9 @@ function createAccount() {
     if (createPassword.length < 6) {
         errorCreatePassword.innerHTML = "Senha deve ter pelo menos 6 digitos";
     }
+    if (inputConfirmPassword.value != createPassword) {
+        errorCreatePassword.innerHTML = "Senhas diferentes";
+    }   
 
 }
 
@@ -117,7 +123,7 @@ function login() {
                             console.log(passwordArray[i]);
                             let h4 = document.createElement("h4");
                             h4.innerHTML = passwordArray[i];
-                            passwordsArea.appendChild(h4);
+                            myPasswords.appendChild(h4);
                         }
                     })
                 })
@@ -127,6 +133,7 @@ function login() {
     }).catch((err) => {
         console.log(err);
     })
+    
 }
 
 function backToStart() {
@@ -134,7 +141,34 @@ function backToStart() {
     generatorArea.style.display = "none";
     createAccountArea.style.display = "flex";
     passwordsArea.style.display = "none";
-    passwordsArea.innerHTML = "";
+    myPasswords.innerHTML = "";
+}
+
+function goToDeleteAccount() {
+
+    generatorArea.style.display = "none";
+    deleteArea.style.display = "block";
+}
+
+function noDelete() {
+    deleteArea.style.display = "none";
+    generatorArea.style.display = "block";
+    errorToDelete.innerHTML = "";
+}
+
+function deleteAccount() {
+    let confirmDelete = document.getElementById("confirmDelete");
+
+
+    if (confirmDelete.value == "CONFIRMAR") {
+        db.collection(PASSWORDS).doc(userNameInput.value).delete().then(() => {
+            console.log("usuário deletado com sucesso");
+        }).catch((err) => {
+            console.log(err);
+        })
+    } else {
+        errorToDelete.innerHTML = "Texto incorreto";
+    }
 }
 
 function createPassword() {
@@ -152,7 +186,8 @@ function createPassword() {
     }
 
     //Style
-    backToStartButton.style.display = "none";
+    mainButtons.style.display = "none";
+
     yourPassword.style.display = "block";
     passwordHTML.style.display = "block";
     generatePassword.innerHTML = "Gerar Nova Senha";
@@ -181,7 +216,7 @@ function back() {
     backButton.style.display = "none";
     saveButton.style.display = "none";
     generatePassword.innerHTML = "Gerar Senha";
-    generatePassword.style.display = "inline";
+    generatePassword.style.display = "block";
     h2Message.innerHTML = ""
     successMessage.innerHTML = "";
 }
@@ -201,22 +236,24 @@ function save() {
                 Passwords: firebase.firestore.FieldValue.arrayUnion(siteName + " - " + password)
             }).then(() => {
                 console.log("Documento atualizado com sucesso");
-                db.collection(PASSWORDS).get().then((snapshot) => {
+                db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
                     snapshot.forEach((doc) => {
-                        passwordsArea.innerHTML = "";
                         let passwordArray = doc.data().Passwords;
+                        myPasswords.innerHTML = "";
                         for (let i = 0; i < passwordArray.length; i++) {
                             console.log(passwordArray[i]);
                             let h4 = document.createElement("h4");
                             h4.innerHTML = passwordArray[i];
-                            passwordsArea.appendChild(h4);
+                            myPasswords.appendChild(h4);
                         }
                     })
                 })
             }).catch(err => {
                 console.log(err);
-            })        
+            })
 
+        inputError.innerHTML = "";
+        
         //Style
         generatePassword.style.display = "none";
         passwordHTML.style.display = "none";
@@ -226,5 +263,6 @@ function save() {
         passwordFunction.style.display = "none";
         successMessage.innerHTML = "Sua senha foi salvada com sucesso!";
         saveButton.style.display = "none";
+        mainButtons.style.display = "flex";
     }
 }

@@ -38,8 +38,10 @@
         <div id="loginArea">
             <h2 id="putLogin"></h2>
             <div id="loginInputs">
+                <p id="inputLoginError"></p>
                 <input id="userNameInput" type="text" placeholder="Nome de Usuário">
                 <!--input id="inputLoginEmail" type="text" placeholder="Email"-->
+                <p id="wrongPassword"></p>
                 <input id="userPasswordInput" type="password" placeholder="Senha">
             </div>
             <div>
@@ -74,7 +76,8 @@
             </div>
         </div>
         <div id="deleteArea">
-            <h2>Digite "CONFIRMAR" para deletar sua conta:</h2>
+            <h2 id="deleteHeader"></h2>
+            <button id="OutDeleteAreaButton" onclick="outDeleteArea()">Voltar</button>
             <p id="errorToDelete"></p>
             <input id="confirmDelete" type="text" placeholder="CONFIRMAR">
             <div id="allDeleteButtons">

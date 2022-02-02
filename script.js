@@ -29,6 +29,11 @@ var loginArea = document.getElementById("loginArea");
 var putLogin = document.getElementById("putLogin");
 var userNameInput = document.getElementById("userNameInput");
 var userPasswordInput = document.getElementById("userPasswordInput");
+var wrongPassword = document.getElementById("wrongPassword");
+
+/*var passwordArea = document.getElementById("passwordArea");
+var saveArea = document.getElementById("saveArea");
+var saveControls = document.getElementById("saveControls");*/
 
 var generatePassword = document.getElementById("generatePassword");
 var mainButtons = document.getElementById("mainButtons");
@@ -46,6 +51,9 @@ var successMessage = document.getElementById("successMessage");
 
 var deleteArea = document.getElementById("deleteArea");
 var errorToDelete = document.getElementById("errorToDelete");
+var deleteHeader = document.getElementById("deleteHeader");
+var inputLoginError = document.getElementById("inputLoginError");
+var OutDeleteAreaButton = document.getElementById("OutDeleteAreaButton");
 
 var passwordsArea = document.getElementById("passwordsArea");
 var myPasswords = document.getElementById("myPasswords");
@@ -68,6 +76,9 @@ function createAccount() {
                 MasterPassword: createPassword,
             }).then(() => {
                 console.log("Usuário criado com sucesso");
+                inputCreateUser.value = "";
+                inputCreatePassword.value = "";
+                inputConfirmPassword.value = "";
             }).catch(err => {
                 console.log(err);
             })
@@ -75,13 +86,36 @@ function createAccount() {
     }
     if (createUser == "") {
         failToCreateUser.innerHTML = "Este campo não pode ficar vazio";
+    } else {
+        failToCreateUser.innerHTML = "";
     }
     if (createPassword.length < 6) {
         errorCreatePassword.innerHTML = "Senha deve ter pelo menos 6 digitos";
+    } else {
+        errorCreatePassword.innerHTML = "";
+        if (inputConfirmPassword.value != createPassword) {
+            errorCreatePassword.innerHTML = "Senhas diferentes";
+        } else {
+            errorCreatePassword.innerHTML = "";
+        }
     }
-    if (inputConfirmPassword.value != createPassword) {
-        errorCreatePassword.innerHTML = "Senhas diferentes";
-    }   
+
+    /*let auth = firebase.auth();
+
+    auth.createUserWithEmailAndPassword(newUserEmail, newUserPassword)
+        .then(user => {
+            console.log(user);
+            createAccountArea.style.display = "none";
+            generatorArea.style.display = "block"
+        }).catch(error => {
+            console.log(error);
+            if (error) {
+                failToCreate.innerHTML = "Credenciais Inválidas";
+                failToCreate.style.color = "red";
+            }
+            if (inputCreatePassword.length < 6) {
+                errorCreatePassword.style.display = "block";
+        });*/
 
 }
 
@@ -92,48 +126,103 @@ function goToLoginArea() {
     loginArea.style.display = "flex";
     loginArea.style.flexDirection = "column";
     loginArea.style.justifyContent = "center";
-
+    failToCreateUser.innerHTML = "";
+    errorCreatePassword.innerHTML = "";
+    wrongPassword.innerHTML = "";
+    userNameInput.value = "";
+    userPasswordInput.value = "";
 }
 
 function backToCreateAccount() {
     loginArea.style.display = "none";
     createAccountArea.style.display = "flex";
+    inputLoginError.innerHTML = "";
+    wrongPassword.innerHTML = "";
+    userNameInput.value = "";
+    userPasswordInput.value = "";
 }
 
 function login() {
 
-    //Calc
+    inputLoginError.innerHTML = "";
+    wrongPassword.innerHTML = "";
+
     let userName = userNameInput.value;
     let userPassword = userPasswordInput.value;
 
-    db.collection(PASSWORDS).doc(userName).update({}).then(() => {
-        db.collection(PASSWORDS).where("MasterPassword", "==", userPassword).get().then((snapshot) => {
-            snapshot.forEach(() => {
-                console.log("Usuário logado com sucesso");
+    if (userName == "" || userPassword == "") {
+        inputLoginError.innerHTML = "Preencha todos os campos";
+    } else {
+        inputLoginError.innerHTML = ""
+    }
 
-                //Style
-                loginArea.style.display = "none";
-                generatorArea.style.display = "block";
-                welcome.innerHTML = "Bem Vindo, " + userName;
-                passwordsArea.style.display = "inline-block";
-                db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
-                    snapshot.forEach((doc) => {
-                        let passwordArray = doc.data().Passwords;
-                        for (let i = 0; i < passwordArray.length; i++) {
-                            console.log(passwordArray[i]);
-                            let h4 = document.createElement("h4");
-                            h4.innerHTML = passwordArray[i];
-                            myPasswords.appendChild(h4);
-                        }
-                    })
-                })
-
-            })
-        })
-    }).catch((err) => {
-        console.log(err);
+    db.collection(PASSWORDS).doc(userName).get().then((doc) => {
+        let masterPassword = doc.data().MasterPassword;
+        if (userName != "" || userPassword != "" && userPassword != masterPassword) {
+            wrongPassword.innerHTML = "Senha incorreta";
+        }
     })
-    
+
+    let docRef = db.collection(PASSWORDS).doc(userName);
+    docRef.get().then((doc) => {
+        let name = doc.data().Name;
+        let masterPassword = doc.data().MasterPassword;
+        if (name == userName && masterPassword == userPassword) {
+            console.log("Usuário logado com sucesso");
+            //Style
+            loginArea.style.display = "none";
+            generatorArea.style.display = "block";
+            welcome.innerHTML = "Bem Vindo, " + userName;
+            passwordsArea.style.display = "inline-block";
+            db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
+                snapshot.forEach((doc) => {
+                    let passwordArray = doc.data().Passwords;
+                    for (let i = 0; i < passwordArray.length; i++) {
+                        console.log(passwordArray[i]);
+                        let h4 = document.createElement("h4");
+                        h4.innerHTML = passwordArray[i];
+                        myPasswords.appendChild(h4);
+                    }
+                })
+            })
+        }
+    })
+
+    /*let docRef = db.collection(PASSWORDS).doc(userName);
+    docRef.get().then((doc) => {
+        let name = doc.data().Name;
+        let masterPassword = doc.data().MasterPassword;
+        if (name == userName && masterPassword == userPassword) {}
+    })*/
+
+    //db.collection(PASSWORDS).doc(userName).update({}).then(() => {
+
+    /*console.log("Usuário logado com sucesso");
+    //Style
+    loginArea.style.display = "none";
+    generatorArea.style.display = "block";
+    welcome.innerHTML = "Bem Vindo, " + userName;
+    passwordsArea.style.display = "inline-block";
+    db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
+        snapshot.forEach((doc) => {
+            let passwordArray = doc.data().Passwords;
+            for (let i = 0; i < passwordArray.length; i++) {
+                console.log(passwordArray[i]);
+                let h4 = document.createElement("h4");
+                h4.innerHTML = passwordArray[i];
+                myPasswords.appendChild(h4);
+            }
+        })
+    })*/
+
+    /* }).catch((err) => {
+        console.log(err);
+    })*/
+
+    /*loginArea.style.display = "none";
+    generatorArea.style.display = "block";
+    welcome.innerHTML = "Bem Vindo, " + userName;
+    passwordsArea.style.display = "inline-block";*/
 }
 
 function backToStart() {
@@ -142,33 +231,45 @@ function backToStart() {
     createAccountArea.style.display = "flex";
     passwordsArea.style.display = "none";
     myPasswords.innerHTML = "";
+    errorToDelete.innerHTML = "";
 }
 
 function goToDeleteAccount() {
 
     generatorArea.style.display = "none";
     deleteArea.style.display = "block";
+    deleteHeader.innerHTML = "Digite 'CONFIRMAR' para deletar sua conta:"
 }
 
 function noDelete() {
     deleteArea.style.display = "none";
     generatorArea.style.display = "block";
     errorToDelete.innerHTML = "";
+    deleteHeader.innerHTML = "";
 }
 
 function deleteAccount() {
     let confirmDelete = document.getElementById("confirmDelete");
-
+    let allDeleteButtons = document.getElementById("allDeleteButtons");
 
     if (confirmDelete.value == "CONFIRMAR") {
         db.collection(PASSWORDS).doc(userNameInput.value).delete().then(() => {
-            console.log("usuário deletado com sucesso");
+            console.log("Usuário deletado com sucesso");
+            deleteHeader.innerHTML = "Conta deletada com sucesso!";
+            confirmDelete.style.display = "none";
+            allDeleteButtons.style.display = "none";
+            OutDeleteAreaButton.style.display = "block";
         }).catch((err) => {
             console.log(err);
         })
     } else {
         errorToDelete.innerHTML = "Texto incorreto";
     }
+}
+
+function outDeleteArea() {
+    deleteArea.style.display = "none";
+    createAccountArea.style.display = "flex";
 }
 
 function createPassword() {
@@ -232,6 +333,10 @@ function save() {
         let userName = userNameInput.value;
         let siteName = passwordFunction.value;
 
+        /*db.collection(PASSWORDS).where("Name", "==", userName)
+            .get()
+            .then()*/
+
         db.collection(PASSWORDS)
             .doc(userName).update({
                 Passwords: firebase.firestore.FieldValue.arrayUnion(siteName + " - " + password)
@@ -254,7 +359,48 @@ function save() {
             })
 
         inputError.innerHTML = "";
-        
+
+        /*db.collection(PASSWORDS).doc(passwordFunction.value).set({
+            Password: password,
+        }).then(() => {
+            console.log("Documento inserido com sucesso")
+        }).catch(err => {
+            console.log(err);
+        })*/
+
+        /*db.collection(PASSWORDS).add({
+            Password: passwordFunction.value + " - " + password,
+            //Password: password,
+        }).then((doc) => {
+            console.log("Documento inserido com sucesso", doc);
+        }).catch(err => {
+            console.log(err);
+        })*/
+
+        /*db.collection(PASSWORDS).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                let id = doc.id;
+                console.log(id);
+                db.collection(PASSWORDS).doc("Carlos").update({
+                    //Password: passwordFunction.value + " - " + password,
+                    Passwords: {
+                        netflix: "137uf413",
+                        Youtube: "qwief01"
+                    }
+                }).then(() => {
+                    console.log("Documento inserido com sucesso")
+                }).catch(err => {
+                    console.log(err);
+                })
+            })
+        })*/
+
+        /*db.collection(PASSWORDS).get().then((snapshot) => {
+            snapshot.forEach((doc) => {
+                console.log(doc.data().Password);
+            })
+        })*/
+
         //Style
         generatePassword.style.display = "none";
         passwordHTML.style.display = "none";
@@ -266,3 +412,32 @@ function save() {
         saveButton.style.display = "none";
     }
 }
+
+/*db.collection(PASSWORDS).get().then((snapshot) => {
+    snapshot.forEach((doc) => {
+        let id = doc.id;
+        console.log(id);
+        db.collection(PASSWORDS).doc(userName).update({
+            //Password: passwordFunction.value + " - " + password,
+            Passwords: {
+                netflix: "137uf413",
+                Youtube: "qwief01",
+            }
+        }).then(() => {
+            console.log("Documento atualizado com sucesso");
+        }).catch(err => {
+            console.log(err);
+        })
+    })
+})*/
+
+/*() => {
+    db.collection(PASSWORDS).doc(userName).set({
+        Name: userName,
+        MasterPassword: userPassword,
+    }).then(() => {
+        console.log("Usuário criado com sucesso");
+    }).catch(err => {
+        console.log(err);
+    })
+}*/

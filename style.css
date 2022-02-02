@@ -91,11 +91,22 @@ p {
 }
 
 #leaveToStartButton {
+    width: 6%;
+    display: inline;
     background-color: red;
+
+    transition-property: all;
+    transition-duration: 200ms;
 }
+
+#leaveToStartButton:hover {
+    width: 6.2%;
+}
+
 
 #makeLoginButton {
     width: 6%;
+    display: inline;
     background-color: yellowgreen;
 
     transition-property: all;
@@ -171,7 +182,7 @@ p {
 }*/
 
 #deleteAccountButton {
-    width: 7%;
+    width: 7.1%;
     padding: 0.7%;
     background-color: red;
 }
@@ -212,6 +223,12 @@ p {
 
 #deleteAccountButton:hover {
     width: 7.2%;
+}
+
+#OutDeleteAreaButton {
+    display: none;
+    margin: auto;
+    background-color: green;
 }
 
 #generatePassword {

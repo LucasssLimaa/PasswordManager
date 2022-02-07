@@ -383,4 +383,21 @@ p {
         padding: 1.5%;
     }
 
+    #confirmDelete {
+        width: 45%;
+        padding: 1%;
+    }
+
+    #confirmDelete:hover {
+        width: 13.2%;
+    }
+
+    #deleteButton {
+        width: 25%;
+    }
+
+    #deleteButton:hover {
+        width: 25.2%;
+    }
+
 }

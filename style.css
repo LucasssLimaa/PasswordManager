@@ -1,6 +1,7 @@
 body {
     font-family: lato;
-    background-color: slategray;
+    /*background-color: slategray;*/
+    background-color: #34B297;
 }
 
 @font-face {
@@ -8,7 +9,13 @@ body {
     src: url(assets/fonts/Lato-Light.ttf);
 }
 
+img {
+    width: 150px;
+    height: 150px;
+}
+
 input {
+    background-color: #FAF9F6;
     width: 11%;
     padding: 0.4%;
     border-radius: 5px;
@@ -25,7 +32,7 @@ input:hover {
 }
 
 button {
-    color: white;
+    color: #FAF9F6;
     width: 4.7%;
     padding: 0.5%;
     margin: 0.5%;
@@ -33,27 +40,28 @@ button {
     border-radius: 5px;
 
     transition-property: all;
-    transition-duration: 100ms;
+    transition-duration: 200ms;
 }
 
 button:hover {
     width: 4.9%;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 
 p {
     font-weight: 800;
+    font-size: 1.2em;
     margin: 0;
     color: red;
 }
 
 #container {
-    color: white;
+    color: #FAF9F6;
     text-align: center;
 }
 
 #header {
-    font-size: 2.2em;
+    font-size: 2.5vw
 }
 
 #createAccountArea {
@@ -73,11 +81,15 @@ p {
 }
 
 #crateAccountButton {
-    background-color: blue;
+    background-color: #4040ff;
+}
+
+#enterButton {
+    background-color: #4040ff;
 }
 
 #goToLoginButton {
-    background-color: yellowgreen;
+    background-color: #4040ff;
 }
 
 #generatorArea {
@@ -91,23 +103,13 @@ p {
 }
 
 #leaveToStartButton {
-    width: 6%;
-    display: inline;
     background-color: red;
-
-    transition-property: all;
-    transition-duration: 200ms;
 }
-
-#leaveToStartButton:hover {
-    width: 6.2%;
-}
-
 
 #makeLoginButton {
     width: 6%;
     display: inline;
-    background-color: yellowgreen;
+    background-color: #4040ff;
 
     transition-property: all;
     transition-duration: 200ms;
@@ -149,42 +151,39 @@ p {
 }
 
 #loginButton {
-    background-color: yellowgreen;
+    background-color: #4040ff;
 }
 
 #mainButtons {
-    display: flex;
+    display: none;
     flex-direction: row;
     justify-content: center;
+    justify-content: space-around;
 }
 
 #backToStartButton {
     background-color: red;
-}
-
-/*#seePasswords {
-    width: 10%;
-    background-color: forestgreen;
-    width: 11%;
-    font-size: 100%;
-    padding: 0.8%;
-    margin-top: 1%;
-    border-radius: 5px;
-    border: none;
+    padding: 0.7%;
 
     transition-property: all;
     transition-duration: 200ms;
 }
 
-#seePasswords:hover {
-    width: 11.3%;
-    opacity: 0.9;
-}*/
+#backToStartButton:hover {
+    width: 4.9%;
+}
 
 #deleteAccountButton {
-    width: 7.1%;
+    width: 7.5%;
     padding: 0.7%;
     background-color: red;
+
+    transition-property: all;
+    transition-duration: 200ms;
+}
+
+#deleteAccountButton:hover {
+    width: 7.7%;
 }
 
 #deleteArea {
@@ -210,7 +209,7 @@ p {
 }
 
 #deleteButton {
-    background-color: green;
+    background-color: #4040ff;
     width: 8%;
 
     transition-property: all;
@@ -225,20 +224,19 @@ p {
     width: 7.2%;
 }
 
-#OutDeleteAreaButton {
+#outDeleteAreaButton {
     display: none;
     margin: auto;
-    background-color: green;
+    background-color: red;
 }
 
 #generatePassword {
     margin: auto;
     background-color: #333333;
-    color: white;
+    color: #FAF9F6;
     width: 13%;
     font-size: 100%;
     padding: 0.8%;
-    margin-top: 1%;
     border-radius: 5px;
     border: none;
 
@@ -252,14 +250,20 @@ p {
 }
 
 #passwordHTML {
-    color: orangered;
+    display: none;
+    color: #34B297;
+    background-color: #FAF9F6;
+    width: 22%;
+    margin: auto;
+    border-radius: 5px;
+    padding: 0.5%;
 }
 
 #savePasswordButton {
     width: 7.5%;
     display: none;
-    background-color: green;
-    color: white;
+    background-color: #4040ff;
+    color: #FAF9F6;
     border: none;
     border-radius: 5px;
     padding: 0.8%;
@@ -275,10 +279,14 @@ p {
 
 #saveControls {
     margin-top: 1%;
+    display: flex;
+    justify-content: center;
+    justify-content: space-around;
 }
 
 #passwordFunction {
     display: none;
+    padding: 0.5%;
 }
 
 #inputError {
@@ -292,13 +300,87 @@ p {
 
 #saveButton {
     display: none;
-    background-color: green;
+    background-color: #4040ff;
 }
 
 #passwordsArea {
+    background-color: #FAF9F6;
     display: none;
     border-radius: 5px;
 
     width: 30%;
     padding: 0.5%;
+    color: #34B297;
+}
+
+@media screen and (max-width: 1023px) {
+    #header {
+        font-size: 8.5vw;
+    }
+
+    #createYourAccount {
+        font-size: 7.5vw;
+    }
+
+    input {
+        width: 40%;
+        padding: 1%;
+        margin: 1%;
+    }
+
+    input:hover {
+        width: 40.3%;
+    }
+
+    button {
+        width: 20%;
+        padding: 1.5%;
+        margin-top: 2%;
+    }
+
+    button:hover {
+        width: 20.3%;
+        opacity: 0.8;
+    }
+
+    p {
+        font-weight: 800;
+        font-size: 1.2em;
+        margin: 0;
+        color: red;
+    }
+
+    #generatePassword {
+        width: 30%;
+        padding: 2%;
+    }
+
+    #generatePassword:hover {
+        width: 30.3%;
+    }
+
+    #passwordsArea {
+        width: 85%;
+        padding: 0.5%;
+        margin: 2%;
+    }
+
+    #deleteAccountButton {
+        width: 25%;
+        padding: 1.5%;
+    }
+
+    #deleteAccountButton:hover {
+        width: 25.2%;
+    }
+
+    #passwordHTML {
+        width: 85%;
+        padding: 1.5%;
+    }
+
+    #passwordFunction {
+        padding: 1.5%;
+    }
+
 }

@@ -53,22 +53,32 @@ var deleteArea = document.getElementById("deleteArea");
 var errorToDelete = document.getElementById("errorToDelete");
 var deleteHeader = document.getElementById("deleteHeader");
 var inputLoginError = document.getElementById("inputLoginError");
-var OutDeleteAreaButton = document.getElementById("OutDeleteAreaButton");
+var outDeleteAreaButton = document.getElementById("outDeleteAreaButton");
+var deleteAccountButton = document.getElementById("deleteAccountButton");
 
 var passwordsArea = document.getElementById("passwordsArea");
 var myPasswords = document.getElementById("myPasswords");
+var noPasswords = document.getElementById("noPasswords");
 
 var password = "";
+
+/* function checkUser() {
+    failToCreateUser.innerHTML = "Este nome de usúario já está sendo usado";
+} */
 
 function createAccount() {
 
     //Calc
     let createUser = inputCreateUser.value;
     let createPassword = inputCreatePassword.value;
+    let confirmPassword = inputConfirmPassword.value;
 
-    if (createUser != "" && createPassword.length >= 6 && inputConfirmPassword.value == createPassword) {
+    if (createUser != "" && createPassword.length >= 1 && confirmPassword == createPassword) {
         errorCreatePassword.style.display = "none";
-        db.collection(PASSWORDS).doc(createUser).update({}).then(() => {}).catch(() => {
+        db.collection(PASSWORDS).doc(createUser).update({}).then(() => {
+            failToCreateUser.innerHTML = "Este nome de usúario já está sendo usado";
+        }).catch(() => {
+            console.log("Já existente");
             createAccountArea.style.display = "none";
             userCreatedArea.style.display = "flex";
             db.collection(PASSWORDS).doc(createUser).set({
@@ -76,9 +86,7 @@ function createAccount() {
                 MasterPassword: createPassword,
             }).then(() => {
                 console.log("Usuário criado com sucesso");
-                inputCreateUser.value = "";
-                inputCreatePassword.value = "";
-                inputConfirmPassword.value = "";
+                console.log(aux);
             }).catch(err => {
                 console.log(err);
             })
@@ -93,7 +101,7 @@ function createAccount() {
         errorCreatePassword.innerHTML = "Senha deve ter pelo menos 6 digitos";
     } else {
         errorCreatePassword.innerHTML = "";
-        if (inputConfirmPassword.value != createPassword) {
+        if (confirmPassword != createPassword) {
             errorCreatePassword.innerHTML = "Senhas diferentes";
         } else {
             errorCreatePassword.innerHTML = "";
@@ -119,6 +127,32 @@ function createAccount() {
 
 }
 
+function backToStart() {
+    userCreatedArea.style.display = "none";
+    generatorArea.style.display = "none";
+    mainButtons.style.display = "none"
+    createAccountArea.style.display = "flex";
+    passwordsArea.style.display = "none";
+    myPasswords.innerHTML = "";
+    errorToDelete.innerHTML = "";
+    inputLoginError.innerHTML = "";
+    wrongPassword.innerHTML = "";
+    failToCreateUser.innerHTML = "";
+    inputCreatePassword.value = "";
+    inputCreateUser.value = "";
+    inputConfirmPassword.value = "";
+}
+
+function enter() {
+    userCreatedArea.style.display = "none";
+    createAccountArea.style.display = "none";
+    generatorArea.style.display = "block";
+    welcome.innerHTML = "Bem Vindo(a), " + inputCreateUser.value;
+    passwordsArea.style.display = "inline-block"
+    mainButtons.style.display = "flex";
+    /*noPasswords.innerHTML = "Suas senhas vão aparecer aqui quando salvar";*/
+}
+
 function goToLoginArea() {
     userCreatedArea.style.display = "none";
     putLogin.innerHTML = "Insira seu email e senha:"
@@ -131,15 +165,9 @@ function goToLoginArea() {
     wrongPassword.innerHTML = "";
     userNameInput.value = "";
     userPasswordInput.value = "";
-}
-
-function backToCreateAccount() {
-    loginArea.style.display = "none";
-    createAccountArea.style.display = "flex";
-    inputLoginError.innerHTML = "";
-    wrongPassword.innerHTML = "";
-    userNameInput.value = "";
-    userPasswordInput.value = "";
+    inputCreateUser.value = "";
+    inputCreatePassword.value = "";
+    inputConfirmPassword.value = "";
 }
 
 function login() {
@@ -161,6 +189,8 @@ function login() {
         if (userName != "" || userPassword != "" && userPassword != masterPassword) {
             wrongPassword.innerHTML = "Senha incorreta";
         }
+    }).catch(() => {
+        inputLoginError.innerHTML = "Usúario não existe";
     })
 
     let docRef = db.collection(PASSWORDS).doc(userName);
@@ -172,7 +202,8 @@ function login() {
             //Style
             loginArea.style.display = "none";
             generatorArea.style.display = "block";
-            welcome.innerHTML = "Bem Vindo, " + userName;
+            mainButtons.style.display = "flex";
+            welcome.innerHTML = "Bem Vindo(a), " + userName;
             passwordsArea.style.display = "inline-block";
             db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
                 snapshot.forEach((doc) => {
@@ -225,18 +256,15 @@ function login() {
     passwordsArea.style.display = "inline-block";*/
 }
 
-function backToStart() {
-    userCreatedArea.style.display = "none";
-    generatorArea.style.display = "none";
+function backToCreateAccount() {
+    loginArea.style.display = "none";
     createAccountArea.style.display = "flex";
-    passwordsArea.style.display = "none";
-    myPasswords.innerHTML = "";
-    errorToDelete.innerHTML = "";
 }
 
 function goToDeleteAccount() {
 
     generatorArea.style.display = "none";
+    mainButtons.style.display = "none"
     deleteArea.style.display = "block";
     deleteHeader.innerHTML = "Digite 'CONFIRMAR' para deletar sua conta:"
 }
@@ -244,6 +272,7 @@ function goToDeleteAccount() {
 function noDelete() {
     deleteArea.style.display = "none";
     generatorArea.style.display = "block";
+    mainButtons.style.display = "flex"
     errorToDelete.innerHTML = "";
     deleteHeader.innerHTML = "";
 }
@@ -258,7 +287,7 @@ function deleteAccount() {
             deleteHeader.innerHTML = "Conta deletada com sucesso!";
             confirmDelete.style.display = "none";
             allDeleteButtons.style.display = "none";
-            OutDeleteAreaButton.style.display = "block";
+            outDeleteAreaButton.style.display = "block";
         }).catch((err) => {
             console.log(err);
         })
@@ -287,24 +316,27 @@ function createPassword() {
     }
 
     //Style
+    generatePassword.style.display = "none";
+    passwordHTML.style.display = "inline";
     mainButtons.style.display = "none";
-
+    backButton.style.display = "block";
+    welcome.style.display = "none";
     yourPassword.style.display = "block";
     passwordHTML.style.display = "block";
     generatePassword.innerHTML = "Gerar Nova Senha";
     yourPassword.innerHTML = "Sua senha:";
     passwordHTML.innerHTML = password;
-    savePasswordButton.style.display = "inline";
+    /*savePasswordButton.style.display = "inline";*/
+    h2Message.innerHTML = "Para qual app ou site essa senha vai servir?"
+    passwordFunction.style.display = "inline";
+    saveButton.style.display = "inline-block";
 }
 
 function savePassword() {
     passwordFunction.style.display = "inline-block";
     savePasswordButton.style.display = "none";
     backButton.style.display = "inline-block";
-    saveButton.style.display = "inline-block";
     generatePassword.style.display = "none";
-    h2Message.innerHTML = "Para qual app ou site essa senha vai servir?"
-
 }
 
 function back() {
@@ -321,6 +353,9 @@ function back() {
     h2Message.innerHTML = ""
     successMessage.innerHTML = "";
     mainButtons.style.display = "flex";
+    welcome.style.display = "block";
+    inputError.innerHTML = "";
+    successMessage.style.display = "none";
 }
 
 function save() {
@@ -406,7 +441,7 @@ function save() {
         passwordHTML.style.display = "none";
         yourPassword.style.display = "none";
         savePasswordButton.style.display = "none";
-        h2Message.style.display = "none";
+        h2Message.innerHTML = "";
         passwordFunction.style.display = "none";
         successMessage.innerHTML = "Sua senha foi salvada com sucesso!";
         saveButton.style.display = "none";

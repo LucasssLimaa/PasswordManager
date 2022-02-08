@@ -8,9 +8,9 @@ const firebaseConfig = {
     measurementId: "G-FVXQELCJS8"
 };
 firebase.initializeApp(firebaseConfig)
-const db = firebase.firestore()
+const db = firebase.firestore();
 
-const PASSWORDS = "Passwords";
+const USERS = "Users";
 
 var createAccountArea = document.getElementById("createAccountArea");
 var generatorArea = document.getElementById("generatorArea");
@@ -30,10 +30,6 @@ var putLogin = document.getElementById("putLogin");
 var userNameInput = document.getElementById("userNameInput");
 var userPasswordInput = document.getElementById("userPasswordInput");
 var wrongPassword = document.getElementById("wrongPassword");
-
-/*var passwordArea = document.getElementById("passwordArea");
-var saveArea = document.getElementById("saveArea");
-var saveControls = document.getElementById("saveControls");*/
 
 var generatePassword = document.getElementById("generatePassword");
 var mainButtons = document.getElementById("mainButtons");
@@ -62,10 +58,6 @@ var noPasswords = document.getElementById("noPasswords");
 
 var password = "";
 
-/* function checkUser() {
-    failToCreateUser.innerHTML = "Este nome de usúario já está sendo usado";
-} */
-
 function createAccount() {
 
     //Calc
@@ -74,19 +66,17 @@ function createAccount() {
     let confirmPassword = inputConfirmPassword.value;
 
     if (createUser != "" && createPassword.length >= 1 && confirmPassword == createPassword) {
-        errorCreatePassword.style.display = "none";
-        db.collection(PASSWORDS).doc(createUser).update({}).then(() => {
+        db.collection(USERS).doc(createUser).update({}).then(() => {
             failToCreateUser.innerHTML = "Este nome de usúario já está sendo usado";
         }).catch(() => {
-            console.log("Já existente");
             createAccountArea.style.display = "none";
             userCreatedArea.style.display = "flex";
-            db.collection(PASSWORDS).doc(createUser).set({
+            db.collection(USERS).doc(createUser).set({
                 Name: createUser,
                 MasterPassword: createPassword,
             }).then(() => {
+                userNameInput.value = "";
                 console.log("Usuário criado com sucesso");
-                console.log(aux);
             }).catch(err => {
                 console.log(err);
             })
@@ -108,29 +98,12 @@ function createAccount() {
         }
     }
 
-    /*let auth = firebase.auth();
-
-    auth.createUserWithEmailAndPassword(newUserEmail, newUserPassword)
-        .then(user => {
-            console.log(user);
-            createAccountArea.style.display = "none";
-            generatorArea.style.display = "block"
-        }).catch(error => {
-            console.log(error);
-            if (error) {
-                failToCreate.innerHTML = "Credenciais Inválidas";
-                failToCreate.style.color = "red";
-            }
-            if (inputCreatePassword.length < 6) {
-                errorCreatePassword.style.display = "block";
-        });*/
-
 }
 
 function backToStart() {
     userCreatedArea.style.display = "none";
     generatorArea.style.display = "none";
-    mainButtons.style.display = "none"
+    mainButtons.style.display = "none";
     createAccountArea.style.display = "flex";
     passwordsArea.style.display = "none";
     myPasswords.innerHTML = "";
@@ -150,7 +123,6 @@ function enter() {
     welcome.innerHTML = "Bem Vindo(a), " + inputCreateUser.value;
     passwordsArea.style.display = "inline-block"
     mainButtons.style.display = "flex";
-    /*noPasswords.innerHTML = "Suas senhas vão aparecer aqui quando salvar";*/
 }
 
 function goToLoginArea() {
@@ -181,10 +153,10 @@ function login() {
     if (userName == "" || userPassword == "") {
         inputLoginError.innerHTML = "Preencha todos os campos";
     } else {
-        inputLoginError.innerHTML = ""
+        inputLoginError.innerHTML = "";
     }
 
-    db.collection(PASSWORDS).doc(userName).get().then((doc) => {
+    db.collection(USERS).doc(userName).get().then((doc) => {
         let masterPassword = doc.data().MasterPassword;
         if (userName != "" || userPassword != "" && userPassword != masterPassword) {
             wrongPassword.innerHTML = "Senha incorreta";
@@ -193,7 +165,7 @@ function login() {
         inputLoginError.innerHTML = "Usúario não existe";
     })
 
-    let docRef = db.collection(PASSWORDS).doc(userName);
+    let docRef = db.collection(USERS).doc(userName);
     docRef.get().then((doc) => {
         let name = doc.data().Name;
         let masterPassword = doc.data().MasterPassword;
@@ -205,7 +177,7 @@ function login() {
             mainButtons.style.display = "flex";
             welcome.innerHTML = "Bem Vindo(a), " + userName;
             passwordsArea.style.display = "inline-block";
-            db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
+            db.collection(USERS).where("Name", "==", userName).get().then((snapshot) => {
                 snapshot.forEach((doc) => {
                     let passwordArray = doc.data().Passwords;
                     for (let i = 0; i < passwordArray.length; i++) {
@@ -218,42 +190,6 @@ function login() {
             })
         }
     })
-
-    /*let docRef = db.collection(PASSWORDS).doc(userName);
-    docRef.get().then((doc) => {
-        let name = doc.data().Name;
-        let masterPassword = doc.data().MasterPassword;
-        if (name == userName && masterPassword == userPassword) {}
-    })*/
-
-    //db.collection(PASSWORDS).doc(userName).update({}).then(() => {
-
-    /*console.log("Usuário logado com sucesso");
-    //Style
-    loginArea.style.display = "none";
-    generatorArea.style.display = "block";
-    welcome.innerHTML = "Bem Vindo, " + userName;
-    passwordsArea.style.display = "inline-block";
-    db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
-        snapshot.forEach((doc) => {
-            let passwordArray = doc.data().Passwords;
-            for (let i = 0; i < passwordArray.length; i++) {
-                console.log(passwordArray[i]);
-                let h4 = document.createElement("h4");
-                h4.innerHTML = passwordArray[i];
-                myPasswords.appendChild(h4);
-            }
-        })
-    })*/
-
-    /* }).catch((err) => {
-        console.log(err);
-    })*/
-
-    /*loginArea.style.display = "none";
-    generatorArea.style.display = "block";
-    welcome.innerHTML = "Bem Vindo, " + userName;
-    passwordsArea.style.display = "inline-block";*/
 }
 
 function backToCreateAccount() {
@@ -262,9 +198,8 @@ function backToCreateAccount() {
 }
 
 function goToDeleteAccount() {
-
     generatorArea.style.display = "none";
-    mainButtons.style.display = "none"
+    mainButtons.style.display = "none";
     deleteArea.style.display = "block";
     deleteHeader.innerHTML = "Digite 'CONFIRMAR' para deletar sua conta:"
 }
@@ -282,7 +217,7 @@ function deleteAccount() {
     let allDeleteButtons = document.getElementById("allDeleteButtons");
 
     if (confirmDelete.value == "CONFIRMAR") {
-        db.collection(PASSWORDS).doc(userNameInput.value).delete().then(() => {
+        db.collection(USERS).doc(userNameInput.value).delete().then(() => {
             console.log("Usuário deletado com sucesso");
             deleteHeader.innerHTML = "Conta deletada com sucesso!";
             confirmDelete.style.display = "none";
@@ -323,11 +258,9 @@ function createPassword() {
     welcome.style.display = "none";
     yourPassword.style.display = "block";
     passwordHTML.style.display = "block";
-    generatePassword.innerHTML = "Gerar Nova Senha";
     yourPassword.innerHTML = "Sua senha:";
     passwordHTML.innerHTML = password;
-    /*savePasswordButton.style.display = "inline";*/
-    h2Message.innerHTML = "Para qual app ou site essa senha vai servir?"
+    h2Message.innerHTML = "Para qual app ou site essa senha vai servir?";
     passwordFunction.style.display = "inline";
     saveButton.style.display = "inline-block";
 }
@@ -348,36 +281,35 @@ function back() {
     passwordFunction.value = "";
     backButton.style.display = "none";
     saveButton.style.display = "none";
-    generatePassword.innerHTML = "Gerar Senha";
     generatePassword.style.display = "block";
-    h2Message.innerHTML = ""
+    h2Message.innerHTML = "";
     successMessage.innerHTML = "";
     mainButtons.style.display = "flex";
     welcome.style.display = "block";
     inputError.innerHTML = "";
-    successMessage.style.display = "none";
 }
 
 function save() {
 
-    //Calc
-    if (passwordFunction.value == "") {
+    //Calcs
+    let userName = userNameInput.value;
+    let siteName = passwordFunction.value;
+
+    if (userName == "") {
+        userName = inputCreateUser.value;
+    } else {
+        userName = userNameInput.value;
+    }
+
+    if (siteName == "") {
         inputError.innerHTML = "Esse campo não pode ficar vazio";
     } else {
-        //Calc
-        let userName = userNameInput.value;
-        let siteName = passwordFunction.value;
-
-        /*db.collection(PASSWORDS).where("Name", "==", userName)
-            .get()
-            .then()*/
-
-        db.collection(PASSWORDS)
+        db.collection(USERS)
             .doc(userName).update({
                 Passwords: firebase.firestore.FieldValue.arrayUnion(siteName + " - " + password)
             }).then(() => {
                 console.log("Documento atualizado com sucesso");
-                db.collection(PASSWORDS).where("Name", "==", userName).get().then((snapshot) => {
+                db.collection(USERS).where("Name", "==", userName).get().then((snapshot) => {
                     snapshot.forEach((doc) => {
                         let passwordArray = doc.data().Passwords;
                         myPasswords.innerHTML = "";
@@ -395,47 +327,6 @@ function save() {
 
         inputError.innerHTML = "";
 
-        /*db.collection(PASSWORDS).doc(passwordFunction.value).set({
-            Password: password,
-        }).then(() => {
-            console.log("Documento inserido com sucesso")
-        }).catch(err => {
-            console.log(err);
-        })*/
-
-        /*db.collection(PASSWORDS).add({
-            Password: passwordFunction.value + " - " + password,
-            //Password: password,
-        }).then((doc) => {
-            console.log("Documento inserido com sucesso", doc);
-        }).catch(err => {
-            console.log(err);
-        })*/
-
-        /*db.collection(PASSWORDS).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                let id = doc.id;
-                console.log(id);
-                db.collection(PASSWORDS).doc("Carlos").update({
-                    //Password: passwordFunction.value + " - " + password,
-                    Passwords: {
-                        netflix: "137uf413",
-                        Youtube: "qwief01"
-                    }
-                }).then(() => {
-                    console.log("Documento inserido com sucesso")
-                }).catch(err => {
-                    console.log(err);
-                })
-            })
-        })*/
-
-        /*db.collection(PASSWORDS).get().then((snapshot) => {
-            snapshot.forEach((doc) => {
-                console.log(doc.data().Password);
-            })
-        })*/
-
         //Style
         generatePassword.style.display = "none";
         passwordHTML.style.display = "none";
@@ -447,32 +338,3 @@ function save() {
         saveButton.style.display = "none";
     }
 }
-
-/*db.collection(PASSWORDS).get().then((snapshot) => {
-    snapshot.forEach((doc) => {
-        let id = doc.id;
-        console.log(id);
-        db.collection(PASSWORDS).doc(userName).update({
-            //Password: passwordFunction.value + " - " + password,
-            Passwords: {
-                netflix: "137uf413",
-                Youtube: "qwief01",
-            }
-        }).then(() => {
-            console.log("Documento atualizado com sucesso");
-        }).catch(err => {
-            console.log(err);
-        })
-    })
-})*/
-
-/*() => {
-    db.collection(PASSWORDS).doc(userName).set({
-        Name: userName,
-        MasterPassword: userPassword,
-    }).then(() => {
-        console.log("Usuário criado com sucesso");
-    }).catch(err => {
-        console.log(err);
-    })
-}*/

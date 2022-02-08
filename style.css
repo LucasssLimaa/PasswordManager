@@ -234,7 +234,7 @@ p {
     margin: auto;
     background-color: #333333;
     color: #FAF9F6;
-    width: 13%;
+    width: 10%;
     font-size: 100%;
     padding: 0.8%;
     border-radius: 5px;
@@ -245,7 +245,7 @@ p {
 }
 
 #generatePassword:hover {
-    width: 13.3%;
+    width: 10.3%;
     opacity: 0.9;
 }
 
@@ -389,7 +389,7 @@ p {
     }
 
     #confirmDelete:hover {
-        width: 13.2%;
+        width: 45.2%;
     }
 
     #deleteButton {

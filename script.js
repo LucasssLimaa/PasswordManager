@@ -65,7 +65,7 @@ function createAccount() {
     let createPassword = inputCreatePassword.value;
     let confirmPassword = inputConfirmPassword.value;
 
-    if (createUser != "" && createPassword.length >= 1 && confirmPassword == createPassword) {
+    if (createUser != "" && createPassword.length >= 6 && confirmPassword == createPassword) {
         db.collection(USERS).doc(createUser).update({}).then(() => {
             failToCreateUser.innerHTML = "Este nome de usúario já está sendo usado";
         }).catch(() => {
